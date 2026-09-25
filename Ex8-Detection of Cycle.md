@@ -1,5 +1,5 @@
 # Ex8 Detection of Cycle and Finding the Starting Node in a Linked List
-
+## DATE: 06-08-2026
 ## AIM:
 To write a program that detects a cycle in a linked list and returns the node where the cycle begins.
 If there is no cycle, the program should return null without modifying the linked list.
@@ -16,7 +16,7 @@ If there is no cycle, the program should return null without modifying the linke
 
 
 ## Program:
-```
+```java
  /*
 program that detects a cycle in a linked list and returns the node where the cycle begins.
 If there is no cycle, the program should return null without modifying the linked list.
@@ -24,71 +24,100 @@ If there is no cycle, the program should return null without modifying the linke
 Developed by: KANNADHASAN J
 RegisterNumber: 212224240071
 */
-class DetectCycle {
 
-    static class Node {
-        int data;
-        Node next;
+import java.util.*;
 
-        Node(int data) {
-            this.data = data;
-            this.next = null;
+public class Solution {
+
+    static class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int x) {
+            val = x;
+            next = null;
         }
     }
 
-    static Node detectCycle(Node head) {
-        if (head == null || head.next == null) 
-            return null;
+    public ListNode detectCycle(ListNode head) {
+        if (head == null || head.next == null) return null;
 
-        Node slow = head;
-        Node fast = head;
+        ListNode slow = head, fast = head;
 
         while (fast != null && fast.next != null) {
-            slow = slow.next;          
-            fast = fast.next.next;     
+            slow = slow.next;
+            fast = fast.next.next;
 
-            if (slow == fast) {        
-                break;
+            if (slow == fast) {
+               
+                ListNode entry = head;
+                while (entry != slow) {
+                    entry = entry.next;
+                    slow = slow.next;
+                }
+                return entry;
             }
         }
 
-        if (fast == null || fast.next == null)
-            return null;
-
-        slow = head;
-        while (slow != fast) {
-            slow = slow.next;
-            fast = fast.next;
-        }
-
-        return slow;   
+        return null;
     }
 
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Solution sol = new Solution();
 
-        Node head = new Node(1);
-        head.next = new Node(2);
-        head.next.next = new Node(3);
-        head.next.next.next = new Node(4);
-        head.next.next.next.next = new Node(5);
+        String headInput = sc.nextLine().trim().replaceAll("\\[|\\]", "");
+        
+        int pos = sc.nextInt();
 
-        head.next.next.next.next.next = head.next.next;
+        if (headInput.isEmpty()) {
+            System.out.println("no cylce");
+            return;
+        }
 
-        Node cycleStart = detectCycle(head);
+        String[] parts = headInput.split(",");
+        int[] values = Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();
 
-        if (cycleStart != null)
-            System.out.println("Cycle starts at node: " + cycleStart.data);
-        else
-            System.out.println("No cycle detected.");
+        ListNode head = new ListNode(values[0]);
+        ListNode current = head;
+        List<ListNode> nodeList = new ArrayList<>();
+        nodeList.add(head);
+
+        for (int i = 1; i < values.length; i++) {
+            ListNode newNode = new ListNode(values[i]);
+            current.next = newNode;
+            current = newNode;
+            nodeList.add(newNode);
+        }
+
+      
+        if (pos >= 0 && pos < nodeList.size()) {
+            current.next = nodeList.get(pos);
+        }
+
+
+        ListNode cycleStart = sol.detectCycle(head);
+
+        if (cycleStart != null) {
+            int index = 0;
+            for (ListNode node : nodeList) {
+                if (node == cycleStart) {
+                    System.out.println("tail connects to node index " + index);
+                    return;
+                }
+                index++;
+            }
+        } else {
+            System.out.println("no cycle");
+        }
     }
 }
-  
-*/
+
 ```
 
 ## Output:
 
-<img width="459" height="153" alt="image" src="https://github.com/user-attachments/assets/956e0d1f-b504-4175-853e-7171cb9ffed0" />
+<img width="785" height="229" alt="image" src="https://github.com/user-attachments/assets/2c2c1c13-d8c9-4f90-a8fe-be2a87a79f0d" />
 
 
 ## Result:
