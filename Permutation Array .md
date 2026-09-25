@@ -1,5 +1,5 @@
 # Ex9 Finding the Longest Length of Nested Set in a Permutation Array
-
+## DATE: 17-08-2026
 ## AIM:
 To write a program that finds the length of the longest set s[k] defined as s[k] = { nums[k], nums[nums[k]], nums[nums[nums[k]]], … },where the iteration stops before a duplicate element occurs.
 
@@ -16,68 +16,57 @@ The task is to return the maximum size among all such sets.
 5.Update the maximum count found so far and return it.  
 
 ## Program:
-```
+```java
 /*
 program that removes all nodes from a linked list whose value matches a given integer (val) and returns the new head of the modified linked list.
 Developed by: KANNADHASAN J
 RegisterNumber:  212224240071
 */
-import java.util.Scanner;
-
-class LongestSet {
-
-    public static int longestSetLength(int[] nums) {
-        boolean[] visited = new boolean[nums.length];
-        int maxLength = 0;
-
-        for (int i = 0; i < nums.length; i++) {
-            if (!visited[i]) {
-                int count = 0;
-                int current = i;
-
-                while (!visited[current]) {
-                    visited[current] = true;
-                    current = nums[current];
-                    count++;
-                }
-
-                maxLength = Math.max(maxLength, count);
-            }
-        }
-
-        return maxLength;
-    }
-
+import java.util.*;
+public class ArrayNestingMain {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        String input = sc.nextLine().trim();
+        input = input.replace("nums =", "").replace("[", "").replace("]", "").trim();
+        String[] parts = input.split(",");
+        int[] nums = new int[parts.length];
 
-        System.out.print("Enter the array size: ");
-        int n = sc.nextInt();
-
-        int[] nums = new int[n];
-
-      
-        System.out.println("Enter " + n + " elements:");
-        for (int i = 0; i < n; i++) {
-            nums[i] = sc.nextInt();
+        for (int i = 0; i < parts.length; i++) {
+            nums[i] = Integer.parseInt(parts[i].trim());
         }
-
-        int result = longestSetLength(nums);
-        System.out.println("Maximum size of S[k] = " + result);
-
+        Solution sol = new Solution();
+        int result = sol.arrayNesting(nums);
+        System.out.println(result);
         sc.close();
     }
 }
+class Solution {
+    public int arrayNesting(int[] nums) {
+        int maxlen = 0;
+        boolean[] visited = new boolean[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            if (!visited[i]) {
+                int count = 0;
+                int curr = i;
+                while (!visited[curr]) {
+                    visited[curr] = true;
+                    curr = nums[curr];
+                    count++;
+                }
+                maxlen = Math.max(maxlen, count);
+            }
+        }
+        return maxlen;
 
+    }
+}
    
-*/
 
 ```
 
 ## Output:
 
-<img width="648" height="331" alt="image" src="https://github.com/user-attachments/assets/ec3863b7-0889-4948-bf67-6b809f2f21c8" />
-
+<img width="654" height="189" alt="Screenshot 2026-03-24 135854" src="https://github.com/user-attachments/assets/891ba94c-4ad1-475c-844a-6a51f46f7227" />
 
 ## Result:
 The program successfully computes the longest length of the nested set s[k] for the given permutation array.
